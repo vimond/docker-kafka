@@ -1,22 +1,24 @@
 # Builds an image for Apache Kafka 0.8.1.1 from binary distribution.
 #
-# Runs on Oracle Java 7 and a base of Ubuntu 12.04, currently.
+# Runs on Oracle Java 7 and a base of Ubuntu 14.04, currently.
 #
 # TODO: This base image needs tags :-P
-FROM relateiq/oracle-java7
+FROM  dockerfile/java:oracle-java7
 MAINTAINER Ches Martin <ches@whiskeyandgrits.net>
 
-RUN mkdir /kafka /data /logs
+RUN mkdir -p /kafka /data /logs
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ca-certificates
 
-ENV KAFKA_RELEASE_ARCHIVE kafka_2.10-0.8.1.1.tgz
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV KAFKA_RELEASE_ARCHIVE kafka-0.7.2-incubating-src.tgz
 
 # Download Kafka binary distribution
-ADD http://www.us.apache.org/dist/kafka/0.8.1.1/${KAFKA_RELEASE_ARCHIVE} /tmp/
-ADD https://dist.apache.org/repos/dist/release/kafka/0.8.1.1/${KAFKA_RELEASE_ARCHIVE}.md5 /tmp/
+ADD https://archive.apache.org/dist/kafka/old_releases/kafka-0.7.2-incubating/${KAFKA_RELEASE_ARCHIVE} /tmp/
+ADD https://archive.apache.org/dist/kafka/old_releases/kafka-0.7.2-incubating/${KAFKA_RELEASE_ARCHIVE}.md5 /tmp/
 
 WORKDIR /tmp
 
@@ -28,6 +30,10 @@ RUN echo VERIFY CHECKSUM: && \
 # Install Kafka to /kafka
 RUN tar -zx -C /kafka --strip-components=1 -f ${KAFKA_RELEASE_ARCHIVE} && \
   rm -rf kafka_*
+
+WORKDIR /kafka  
+
+RUN /kafka/sbt update package  
 
 ADD http://repo1.maven.org/maven2/org/slf4j/slf4j-log4j12/1.7.6/slf4j-log4j12-1.7.6.jar /kafka/libs/
 ADD config /kafka/config
