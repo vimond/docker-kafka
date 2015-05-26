@@ -1,4 +1,4 @@
-FROM relateiq/oracle-java7
+FROM vimond/vimond-base-java-7
 
 RUN apt-get update && apt-get install -y \
   ca-certificates wget
