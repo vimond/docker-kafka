@@ -1,10 +1,10 @@
-# Builds an image for Apache Kafka 0.8.1.1 from binary distribution.
+# Builds an image for Apache Kafka 0.7.2 from binary distribution.
 #
 # Runs on Oracle Java 7 and a base of Ubuntu 14.04, currently.
 #
 # TODO: This base image needs tags :-P
-FROM  dockerfile/java:oracle-java7
-MAINTAINER Ches Martin <ches@whiskeyandgrits.net>
+FROM vimond/vimond-base-java-7
+MAINTAINER Olve Hansen <olve@vimond.com> 
 
 RUN mkdir -p /kafka /data /logs
 
