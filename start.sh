@@ -6,14 +6,14 @@ EXTENSION=""
 case $BRANCH in
   master)
     EXTENSION=".prod"
-    CHROOT="/v0_8_1"
+    CHROOT="/v0_8_2"
 
     # TODO Service discovery
     ZOOKEEPER_PORT=${ZOOKEEPER_PORT:-2181}
   ;;
   staging)
     EXTENSION=".staging"
-    CHROOT="/v0_8_1"
+    CHROOT="/v0_8_2"
 
     # TODO Service discovery
     ZOOKEEPER_PORT=${ZOOKEEPER_PORT:-2181}
@@ -21,7 +21,7 @@ case $BRANCH in
   *)
     # Developer environments, etc.
     EXTENSION=".default"
-    EXPOSED_HOST="127.0.0.1"
+    EXPOSED_HOST=${EXPOSED_HOST:-"127.0.0.1"}
     ZOOKEEPER_IP=$ZOOKEEPER_PORT_2181_TCP_ADDR
     ZOOKEEPER_PORT=$ZOOKEEPER_PORT_2181_TCP_PORT
 
